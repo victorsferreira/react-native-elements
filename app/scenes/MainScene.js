@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import ListItem from '../components/ListItem';
+import { Select, Option} from '../components/Select';
 // var ListItem = require('../components/ListItem').default
 
 var Global = require('../lib/Global');
@@ -18,6 +19,7 @@ export default class MainScene extends Component {
   constructor(){
     super();
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    // this.picker = null;
     this.state = {
       dataSource: ds.cloneWithRows([
         'Item 1',
@@ -31,6 +33,11 @@ export default class MainScene extends Component {
         'Item 9'
       ])
     };
+  }
+
+  componentDidMount(){
+    console.log(this.textInput)
+    // this.textInput.click();
   }
 
   _onScroll(e){
@@ -53,15 +60,27 @@ export default class MainScene extends Component {
     // On Scroll
     return (
       <View style={styles.list}>
+
+        <Select>
+          <Option value="1">
+            Victor
+          </Option>
+          <Option value="1">
+            Victor
+          </Option>
+        </Select>
+
         <Picker
+          ref={(input) => { this.textInput = input; }}
           style={styles.picker}
           selectedValue={'Java'}
           onValueChange={(lang) => this.setState({language: lang})}>
           <Picker.Item label="Java" value="java"
-             style={styles.pickerItem} />
+            style={styles.pickerItem} />
           <Picker.Item label="JavaScript" value="js"
-             style={styles.pickerItem} />
+            style={styles.pickerItem} />
         </Picker>
+
         <ListView
           onScroll={this._onScroll}
           dataSource={this.state.dataSource}
@@ -79,7 +98,6 @@ export default class MainScene extends Component {
 
 var styles = StyleSheet.create({
   pickerItem: {
-    fontSize: 8,
     color: 'white'
   },
   container: {
@@ -87,7 +105,6 @@ var styles = StyleSheet.create({
   },
   picker: {
     backgroundColor: 'blue',
-      fontSize: 8,
     color: 'white'
   },
   list: {
