@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 
 import MainScene from './app/scenes/MainScene';
-import SecondScene from './app/scenes/SecondScene';
 
 export default class list extends Component {
   constructor(props){
@@ -29,8 +28,6 @@ export default class list extends Component {
 
     if(route.name == 'Main'){
       return (<MainScene navigator={navigator} {...route.props} title={title} />);
-    }else if(route.name == 'Second'){
-      return (<SecondScene navigator={navigator} {...route.props} title={title} />);
     }
   }
 }

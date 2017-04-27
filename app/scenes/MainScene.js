@@ -8,10 +8,8 @@ import {
   Picker,
   Dimensions
 } from 'react-native';
-
-import ListItem from '../components/ListItem';
-import { Select, Option} from '../components/Select';
-// var ListItem = require('../components/ListItem').default
+//
+import MultiSlider from 'react-native-multi-slider';
 
 var Global = require('../lib/Global');
 
@@ -21,39 +19,62 @@ export default class MainScene extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     // this.picker = null;
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-        'Item 5',
-        'Item 6',
-        'Item 7',
-        'Item 8',
-        'Item 9'
-      ])
+      value_a: 750,
+      value_b: 150,
+      proportion_a: 50,
+      proportion_b: 50,
+      handler_position: 50,
+      result: {
+        a:0,
+        b:0
+      },
     };
   }
 
   componentDidMount(){
-    console.log(this.textInput)
-    // this.textInput.click();
+    var normalized_value_a = this.state.value_a / 10;
+    var normalized_value_b = this.state.value_b;
+    var normalized_total = normalized_value_a + normalized_value_b;
+    var proportion_a = Math.round((normalized_value_a / normalized_total) * 100) ;
+    var proportion_b = 100 - proportion_a;
+
+    this._setState({
+      proportion_a: proportion_a,
+      proportion_b: proportion_b,
+      handler_position: proportion_a
+    });
   }
 
-  _onScroll(e){
-    var windowHeight = Dimensions.get('window').height,
-    height = e.nativeEvent.contentSize.height,
-    offset = e.nativeEvent.contentOffset.y;
+  // componentDidMount(){
+  //   var steps = [];
+  //   for(i=0;i<=10;i++){
+  //
+  //   }
+  // }
 
-    console.log(e.nativeEvent)
-    // alert(e.measure)
+  _setState(obj){
+    this.setState(Object.assign(this.state,obj));
+  }
 
-    if( windowHeight + offset >= height ){
-      // console.log('End Scroll')
-      // alert('oi')
-    }
+  displayA(proportion){
+    // return 1;
+    // console.log(this.state.result.a, this.state.value_a, this.state.proportion_a);
+    return (this.state.result.a * this.state.value_a) / this.state.proportion_a;
+  }
 
-    console.log('windowHeight',windowHeight,'height',height,'offset',offset)
+  displayB(proportion){
+    // return 1;
+    // console.log(this.state.result.b, this.state.value_b, this.state.proportion_b);
+    return (this.state.result.b * this.state.value_b) / this.state.proportion_b;
+  }
+
+  display(){
+    // var value_a = (this.state.result.a * this.state.value_a) / this.state.proportion_a;
+    var normalized_value_a = this.state.value_a / 10;
+    var normalized_value_b = this.state.value_b;
+    var normalized_total = normalized_value_a + normalized_value_b;
+
+    return this.state.result.a;
   }
 
   render() {
@@ -61,42 +82,49 @@ export default class MainScene extends Component {
     return (
       <View style={styles.list}>
 
-        <Select>
-          <Option value="1">
-            Victor
-          </Option>
-          <Option value="1">
-            Victor
-          </Option>
-        </Select>
+        <Text>a: {this.displayA()}</Text>
+        <Text>b: {this.displayB()}</Text>
 
-        <Picker
-          ref={(input) => { this.textInput = input; }}
-          style={styles.picker}
-          selectedValue={'Java'}
-          onValueChange={(lang) => this.setState({language: lang})}>
-          <Picker.Item label="Java" value="java"
-            style={styles.pickerItem} />
-          <Picker.Item label="JavaScript" value="js"
-            style={styles.pickerItem} />
-        </Picker>
+          <MultiSlider
+            values={ [1] }
+            sliderLength={280}
+            min={0}
+            max={1000}
+            step={10}
+            onValuesChange={ (value) => {
+              var b = 100;
+              console.log('calculated a: ', value[0]);
+              console.log('calculated b: ', (2250-value)/10);
+            } }
+            />
 
-        <ListView
-          onScroll={this._onScroll}
-          dataSource={this.state.dataSource}
-          renderRow={
-            (text) => (
-              <ListItem text={text} />
-            )
-          }
-          style={styles.list}
+        <MultiSlider
+          values={ [1] }
+          sliderLength={280}
+          min={0}
+          max={100}
+          step={1}
+          onValuesChange={ (value) => {
+            this._setState({
+              result: {
+                a: value[0],
+                b: 100-value[0]
+              }
+            });
+          } }
           />
+
       </View>
     );
   }
 }
 
 var styles = StyleSheet.create({
+  bar: {
+    flex: .8,
+    backgroundColor: 'black',
+    height: 5
+  },
   pickerItem: {
     color: 'white'
   },
