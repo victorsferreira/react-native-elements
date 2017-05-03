@@ -14,6 +14,8 @@ import MultiSlider from 'react-native-multi-slider';
 
 var Global = require('../lib/Global');
 
+var Contacts = require('react-native-contacts')
+
 export default class MainScene extends Component {
   constructor(){
     super();
@@ -30,6 +32,29 @@ export default class MainScene extends Component {
     //     b:0
     //   },
     // };
+
+    Contacts.getAll((err, contacts) => {
+      if(err === 'denied'){
+        var calls = [{phone: '2122343818'}];
+        var phones = {}, phone_number;
+
+        contacts.forEach(function(contact){
+          contact.phoneNumbers.forEach(function(phoneNumber){
+            phone_number = phoneNumber.number.split(' ').join('');
+            phones[phone_number] = contact;
+          });
+        });
+
+        calls.forEach(function(current_call){
+          if(current_call.phone.split(' ').join('') in phones){
+            //encontrou
+          }
+        });
+
+      } else {
+        console.log(contacts)
+      }
+    })
   }
 
   // componentDidMount(){
