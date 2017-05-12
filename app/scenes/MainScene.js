@@ -7,205 +7,141 @@ import {
   ListView,
   Picker,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Animated,
+  Image,
+  TouchableHighlight,
+  Easing
 } from 'react-native';
 //
-import MultiSlider from 'react-native-multi-slider';
-
-var Global = require('../lib/Global');
+// import MultiSlider from 'react-native-multi-slider';
+//
+// var Global = require('../lib/Global');
 
 var Contacts = require('react-native-contacts')
 
 export default class MainScene extends Component {
   constructor(){
     super();
-    // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    // // this.picker = null;
-    // this.state = {
-    //   value_a: 750,
-    //   value_b: 150,
-    //   proportion_a: 50,
-    //   proportion_b: 50,
-    //   handler_position: 50,
-    //   result: {
-    //     a:0,
-    //     b:0
-    //   },
-    // };
-
-    Contacts.getAll((err, contacts) => {
-      if(err === 'denied'){
-        var calls = [{phone: '2122343818'}];
-        var phones = {}, phone_number;
-
-        contacts.forEach(function(contact){
-          contact.phoneNumbers.forEach(function(phoneNumber){
-            phone_number = phoneNumber.number.split(' ').join('');
-            phones[phone_number] = contact;
-          });
-        });
-
-        calls.forEach(function(current_call){
-          if(current_call.phone.split(' ').join('') in phones){
-            //encontrou
-          }
-        });
-
-      } else {
-        console.log(contacts)
-      }
-    })
+    this.spinValue = new Animated.Value(0)
   }
 
-  // componentDidMount(){
-  //   var normalized_value_a = this.state.value_a / 10;
-  //   var normalized_value_b = this.state.value_b;
-  //   var normalized_total = normalized_value_a + normalized_value_b;
-  //   var proportion_a = Math.round((normalized_value_a / normalized_total) * 100) ;
-  //   var proportion_b = 100 - proportion_a;
-  //
-  //   this._setState({
-  //     proportion_a: proportion_a,
-  //     proportion_b: proportion_b,
-  //     handler_position: proportion_a
-  //   });
-  // }
+  color(){
+    return Animated.timing(
+      'red',
+      {
+        toValue: 'blue',
+        duration: 2000,
+        easing: Easing.linear
+      }
+    )
+  }
 
-  // componentDidMount(){
-  //   var steps = [];
-  //   for(i=0;i<=10;i++){
-  //
-  //   }
-  // }
+  size(){
+    return Animated.timing(
+      16,
+      {
+        toValue: 12,
+        duration: 1000,
+        easing: Easing.linear
+      }
+    ).start();
+  }
 
-  // _setState(obj){
-  //   this.setState(Object.assign(this.state,obj));
-  // }
-  //
-  // displayA(proportion){
-  //   // return 1;
-  //   // console.log(this.state.result.a, this.state.value_a, this.state.proportion_a);
-  //   return (this.state.result.a * this.state.value_a) / this.state.proportion_a;
-  // }
-  //
-  // displayB(proportion){
-  //   // return 1;
-  //   // console.log(this.state.result.b, this.state.value_b, this.state.proportion_b);
-  //   return (this.state.result.b * this.state.value_b) / this.state.proportion_b;
-  // }
-  //
-  // display(){
-  //   // var value_a = (this.state.result.a * this.state.value_a) / this.state.proportion_a;
-  //   var normalized_value_a = this.state.value_a / 10;
-  //   var normalized_value_b = this.state.value_b;
-  //   var normalized_total = normalized_value_a + normalized_value_b;
-  //
-  //   return this.state.result.a;
-  // }
+    top(){
+      return Animated.timing(
+        30,
+        {
+          toValue: 10,
+          duration: 1000,
+          easing: Easing.linear
+        }
+      ).start();
+    }
+
+  // <Animated.Image
+  //   style={{
+  //     width: 227,
+  //     height: 200,
+  //     transform: [{rotate: spin}] }}
+  //     source={{uri: 'http://lorempixel.com/400/200/'}}
+  //     />
+
 
   render() {
-    // On Scroll
+    const spin = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    })
+
+    const color = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['red', 'blue']
+    })
+
+    const size = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 12]
+    })
+
+    const top = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 0]
+    })
+
     return (
       <View style={ {flex: 1, backgroundColor: 'green'} }>
-        <ScrollView style={ {flex: 1, backgroundColor: 'blue'} }>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-          <Text>XXXX</Text>
-        </ScrollView>
-        <View>
-          <Text>Footer</Text>
-        </View>
-      </View>
-    );
-  }
-}
+        <Animated.Image
+          style={{
+            width: 227,
+            height: 200,
+            transform: [{rotate: spin}] }}
+            source={{uri: 'http://lorempixel.com/400/200/'}}
+            />
 
-var styles = StyleSheet.create({
-  // bar: {
-  //   flex: .8,
-  //   backgroundColor: 'black',
-  //   height: 5
-  // },
-  // pickerItem: {
-  //   color: 'white'
-  // },
-  // container: {
-  //   flex: 1
-  // },
-  // picker: {
-  //   backgroundColor: 'blue',
-  //   color: 'white'
-  // },
-  // list: {
-  //   flex: 1
-  // }
-});
+          <Animated.Text
+            style={{
+              position: 'absolute',
+              top: top,
+              fontSize: size,
+              color: 'white'}}
+              >
+              Meu label
+            </Animated.Text>
 
-AppRegistry.registerComponent('MainScene', () => MainScene);
+            <TouchableHighlight onPress={ () => {
+                // alert('oi')
+                // this.color()
+                // this.spin()
+                this.top()
+                this.size()
+              } }><Text>xxx</Text></TouchableHighlight>
+            </View>
+          );
+        }
 
-/*
-<View style={styles.list}>
+        componentDidMount () {
+          // this.spin();
+        }
 
-<Text>a: {this.displayA()}</Text>
-<Text>b: {this.displayB()}</Text>
+        spin () {
+          this.spinValue.setValue(0)
+          Animated.timing(
+            this.spinValue,
+            {
+              toValue: 1,
+              duration: 4000,
+              easing: Easing.linear
+            }
+            // ).start(() => this.spin());
+          ).start();
+        }
 
-<MultiSlider
-values={ [1] }
-sliderLength={280}
-min={0}
-max={1000}
-step={10}
-onValuesChange={ (value) => {
-var b = 100;
-console.log('calculated a: ', value[0]);
-console.log('calculated b: ', (2250-value)/10);
-} }
-/>
 
-<MultiSlider
-values={ [1] }
-sliderLength={280}
-min={0}
-max={100}
-step={1}
-onValuesChange={ (value) => {
-this._setState({
-result: {
-a: value[0],
-b: 100-value[0]
-}
-});
-} }
-/>
+      }
 
-</View>
-*/
+      var styles = StyleSheet.create({
+
+      });
+
+      AppRegistry.registerComponent('MainScene', () => MainScene);
